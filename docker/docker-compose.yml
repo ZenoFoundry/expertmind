@@ -1,0 +1,35 @@
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: expertmind-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+    
+  ollama-setup:
+    image: ollama/ollama
+    container_name: expertmind-ollama-setup
+    depends_on:
+      - ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    command: >
+      sh -c "
+        echo '⏳ Esperando a que Ollama esté listo...'
+        sleep 15
+        echo '🤖 Descargando modelo phi3:mini...'
+        /bin/ollama pull phi3:mini
+        echo '✅ Modelo phi3:mini descargado exitosamente!'
+        echo '🔍 Modelos disponibles:'
+        /bin/ollama list
+      "
+    restart: "no"
+
+volumes:
+  ollama_data:
