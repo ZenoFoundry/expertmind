@@ -17,7 +17,7 @@ let OllamaService = class OllamaService {
     constructor(configService) {
         this.configService = configService;
         this.ollamaUrl = this.configService.get('OLLAMA_URL', 'http://localhost:11434');
-        this.defaultModel = this.configService.get('DEFAULT_MODEL', 'phi3:mini');
+        this.defaultModel = this.configService.get('DEFAULT_MODEL', 'tinyllama');
         console.log(`🔧 Ollama URL configurada: ${this.ollamaUrl}`);
         console.log(`🤖 Modelo por defecto: ${this.defaultModel}`);
     }
