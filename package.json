@@ -23,10 +23,13 @@
     "docker:down": "docker compose -f docker/docker-compose.yml down",
     "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
     "docker:logs-ollama": "docker compose -f docker/docker-compose.yml logs -f ollama",
+    "docker:logs-setup": "docker compose -f docker/docker-compose.yml logs -f model-setup",
     "docker:rebuild": "docker compose -f docker/docker-compose.yml down && docker compose -f docker/docker-compose.yml up -d --build",
     "docker:status": "docker compose -f docker/docker-compose.yml ps",
-    "docker:pull-models": "docker exec expertmind-ollama ollama pull phi3:mini && docker exec expertmind-ollama ollama pull tinyllama",
-    "docker:list-models": "docker exec expertmind-ollama ollama list"
+    "docker:models": "docker exec expertmind-ollama ollama list",
+    "docker:pull-gemma": "docker exec expertmind-ollama ollama pull gemma2:2b",
+    "docker:pull-tinyllama": "docker exec expertmind-ollama ollama pull tinyllama",
+    "docker:test": "curl http://localhost:11434/api/tags"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
