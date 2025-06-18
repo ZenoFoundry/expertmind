@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { OllamaModule } from './ollama/ollama.module.js';
-import { MCPModule } from './mcp/mcp.module.js';
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -17,7 +16,6 @@ AppModule = __decorate([
                 isGlobal: true,
             }),
             OllamaModule,
-            MCPModule,
         ],
         controllers: [],
         providers: [],

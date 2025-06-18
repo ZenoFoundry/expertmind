@@ -9,10 +9,7 @@ async function bootstrap() {
     console.log(`📋 Endpoints disponibles:`);
     console.log(`  - POST /ai/generate - Generar respuesta simple`);
     console.log(`  - POST /ai/chat - Chat conversacional`);
-    console.log(`  - POST /ai/analyze-github - Analizar repositorio GitHub`);
-    console.log(`  - POST /ai/analyze-code - Analizar código específico`);
     console.log(`  - GET /ai/models - Listar modelos disponibles`);
-    console.log(`  - GET /ai/github-tools - Listar herramientas GitHub`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
