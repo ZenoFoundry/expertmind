@@ -10,11 +10,12 @@ import { OllamaController } from './ollama.controller.js';
 import { EnhancedOllamaController } from './enhanced-ollama.controller.js';
 import { OllamaService } from './ollama.service.js';
 import { EnhancedOllamaService } from './enhanced-ollama.service.js';
+import { MCPModule } from '../mcp/mcp.module.js';
 let OllamaModule = class OllamaModule {
 };
 OllamaModule = __decorate([
     Module({
-        imports: [ConfigModule],
+        imports: [ConfigModule, MCPModule],
         controllers: [OllamaController, EnhancedOllamaController],
         providers: [OllamaService, EnhancedOllamaService],
         exports: [OllamaService, EnhancedOllamaService],
