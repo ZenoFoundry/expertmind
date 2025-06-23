@@ -1,0 +1,24 @@
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
+
+# Instalar herramientas de desarrollo
+RUN apk add --no-cache git
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+
+# Instalar todas las dependencias (incluyendo devDependencies)
+RUN npm install
+
+# Instalar NestJS CLI globalmente para comandos en desarrollo
+RUN npm install -g @nestjs/cli
+
+# El código fuente se montará como volumen en docker-compose
+# No es necesario copiar el código fuente aquí, ya que lo montaremos como volumen
+
+# Exponer puertos para la aplicación y para debugging
+EXPOSE 3000 9229
+
+# Comando por defecto para desarrollo con hot-reload
+CMD ["npm", "run", "start:dev"]

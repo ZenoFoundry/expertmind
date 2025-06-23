@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: exp-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: expdb
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro  # Scripts de inicialización
+    networks:
+      - exp-network
+    command: mongod --auth
+
+  exp-core:
+    build: .
+    container_name: exp-core-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    environment:
+      NODE_ENV: develop
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/expdb?authSource=admin
+      OLLAMA_URL: http://ollama:11434
+      PORT: 3000
+    volumes:
+      - ./:/usr/src/app  
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongodb
+      - ollama
+    networks:
+      - exp-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+    networks:
+      - exp-network
+
+  ollama-setup:
+    image: ollama/ollama
+    container_name: ollama-setup
+    depends_on:
+      ollama:
+        condition: service_started
+    command: |
+      sh -c "
+        echo 'Esperando a que Ollama esté listo...' &&
+        sleep 30 &&
+        OLLAMA_HOST=ollama:11434 ollama pull qwen2:1.5b &&
+        echo 'Modelo qwen2:1.5b instalado correctamente' &&
+        OLLAMA_HOST=ollama:11434 ollama list
+      "
+    networks:
+      - exp-network
+    restart: "no"
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+  ollama_data:
+    driver: local
+
+networks:
+  exp-network:
+    driver: bridge
